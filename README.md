@@ -1,2 +1,49 @@
 # Ravi_C-
-All C++ codes
+# this code is for evaluating postfix expression
+import java.util.LinkedList;
+
+public class PostfixExpression {
+
+    public static double calculate(String expression) {
+        LinkedList<Integer> operandStack = new LinkedList<Integer>();
+
+        for (char ch : expression.toCharArray()) {
+            if (ch == ' ') continue;
+
+            if (isDigit(ch)) {
+                operandStack.push(ch - '0');
+            } else {
+                if (operandStack.size() < 2) {
+                    throw new IllegalArgumentException("Invalid expression, not enough operands: " + operandStack);
+                }
+                int operand1 = operandStack.pop();
+                int operand2 = operandStack.pop();
+                switch (ch) {
+                    case '+':
+                        operandStack.push(operand1 + operand2);
+                        break;
+                    case '-':
+                        operandStack.push(operand1 - operand2);
+                        break;
+                    case '/':
+                        operandStack.push(operand1 / operand2);
+                        break;
+                    case '*':
+                        operandStack.push(operand1 * operand2);
+                        break;
+                    
+                }
+            }
+        }
+        return operandStack.pop();
+    }
+
+    private static boolean isDigit(char ch) {
+        return ch >= '0' && ch <= '9';
+    }
+
+    public static void main(String[] args) {
+        System.out.println(PostfixExpression.calculate("2"));
+        System.out.println(PostfixExpression.calculate("5 1 2 + 4 * + 3 -"));
+    }
+}
